@@ -1,0 +1,22 @@
+#!/usr/bin/env coffee # -*- coffee-script -*- -p
+
+#sexp = require 's-expression'
+sexp = require '../lib/main'
+loglet = require 'loglet'
+repl = require 'repl'
+
+myEval = (cmd, context, filename, cb) ->
+  try 
+    loglet.log 'sexp.eval', cmd
+    parsed = sexp.parse(cmd.substring(1, cmd.length - 2))
+    cb null, parsed
+  catch e 
+    console.error e 
+    console.error e.stack
+    cb null
+
+repl.start 
+  prompt: 'sexp> '
+  input: process.stdin
+  output: process.stdout
+  eval: myEval
